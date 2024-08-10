@@ -1,17 +1,20 @@
 import { Button, Navbar, NavbarToggle, TextInput } from "flowbite-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { MdDarkMode, MdLightMode, MdSearch } from "react-icons/md";
 
 export default function Header() {
+  const path = useLocation().pathname;
+
   return (
-    <Navbar className="border-b-2 sticky inset-y-0">
-      <Link
+    <Navbar className="sticky inset-y-0 border-b-2">
+      <Navbar.Brand
+        as={Link}
         to="/"
-        className="text-2xl md:text-3xl font-black whitespace-nowrap"
+        className="whitespace-nowrap text-2xl font-black md:text-3xl"
       >
         <span className="text-gray-500">BOR</span>
         <span className="text-orange-300">GOR</span>
-      </Link>
+      </Navbar.Brand>
       <form>
         <TextInput
           type="text"
@@ -21,27 +24,34 @@ export default function Header() {
         ></TextInput>
       </form>
       <Button className="lg:hidden" color="gray">
-        <MdSearch />
+        <MdSearch className="text-lg" />
       </Button>
       <div className="flex gap-2 md:order-2">
-        <Button className="bg-transparent" color="gray" pill>
+        <Button
+          className="size-10 self-center bg-transparent"
+          color="gray"
+          pill
+        >
           <MdDarkMode />
+          <MdLightMode />
         </Button>
         <Link to="/log-in">
-          <Button gradientDuoTone="pinkToOrange">Login</Button>
+          <Button outline gradientDuoTone="pinkToOrange">
+            Login
+          </Button>
         </Link>
       </div>
       <NavbarToggle />
       <Navbar.Collapse>
-        <div className="flex gap-10 text-lg ">
-          <Navbar.Link>
-            <Link>Home</Link>
+        <div className="flex gap-10 text-lg">
+          <Navbar.Link active={path === "/home"} as="div">
+            <Link to="/home">Home</Link>
           </Navbar.Link>
-          <Navbar.Link>
-            <Link>Help</Link>
+          <Navbar.Link active={path === "/help"} as="div">
+            <Link to="help">Help</Link>
           </Navbar.Link>
-          <Navbar.Link>
-            <Link>Contact</Link>
+          <Navbar.Link active={path === "/contact"} as="div">
+            <Link to="contact">Contact</Link>
           </Navbar.Link>
         </div>
       </Navbar.Collapse>
