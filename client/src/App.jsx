@@ -12,12 +12,12 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="/log-in" element={<Login />}></Route>
-        <Route path="/sign-up" element={<Signup />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/contact" element={<Contact />}></Route>
       </Routes>
-      <div className="h-[200rem] "></div>
+      <div className="h-[200rem]"></div>
     </BrowserRouter>
   );
 }
