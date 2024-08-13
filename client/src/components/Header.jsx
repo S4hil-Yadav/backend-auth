@@ -6,14 +6,14 @@ export default function Header() {
   const path = useLocation().pathname;
 
   return (
-    <Navbar className="sticky inset-y-0 border-b-2">
+    <Navbar className="sticky inset-y-0 z-50 border-b-2">
       <Navbar.Brand
         as={Link}
         to="/"
         className="whitespace-nowrap text-2xl font-black md:text-3xl"
       >
-        <span className="text-gray-500">BOR</span>
-        <span className="text-orange-300">GOR</span>
+        <span className="text-gray-700">BOR</span>
+        <span className="text-orange-500">GOR</span>
       </Navbar.Brand>
       <form>
         <TextInput
@@ -35,15 +35,18 @@ export default function Header() {
           <MdDarkMode />
           <MdLightMode />
         </Button>
-        <Link to="/log-in">
-          <Button outline gradientDuoTone="pinkToOrange">
-            Login
-          </Button>
-        </Link>
+
+        {path !== "/signup" && path !== "/login" && (
+          <Link to="/signup">
+            <Button outline gradientDuoTone="pinkToOrange">
+              Signup
+            </Button>
+          </Link>
+        )}
       </div>
       <NavbarToggle />
       <Navbar.Collapse>
-        <div className="flex gap-10 text-lg">
+        <div className="flex flex-col text-lg md:flex-row md:gap-10">
           <Navbar.Link active={path === "/home"} as="div">
             <Link to="/home">Home</Link>
           </Navbar.Link>
