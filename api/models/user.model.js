@@ -7,6 +7,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: "Username is required",
       unique: true,
+      validate: [
+        (v) => /^[A-Za-z][A-Za-z0-9_]{3,29}$/.test(v),
+        "invalid username",
+      ],
     },
     email: {
       type: String,

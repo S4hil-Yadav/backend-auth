@@ -32,19 +32,19 @@ export default function Header() {
           color="gray"
           pill
         >
-          <MdDarkMode />
-          <MdLightMode />
+          <MdDarkMode className="size-4 self-center" />
+          <MdLightMode className="hidden" />
         </Button>
 
-        {path !== "/signup" && path !== "/login" && (
-          <Link to="/signup">
+        {path !== "/login" && path !== "/signup" && (
+          <Link to="/login">
             <Button outline gradientDuoTone="pinkToOrange">
-              Signup
+              Login
             </Button>
           </Link>
         )}
+        <NavbarToggle />
       </div>
-      <NavbarToggle />
       <Navbar.Collapse>
         <div className="flex flex-col text-lg md:flex-row md:gap-10">
           <Navbar.Link active={path === "/home"} as="div">

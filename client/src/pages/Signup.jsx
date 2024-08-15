@@ -1,4 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
+import { IoMdEyeOff, IoMdEye } from "react-icons/io";
+import { useState } from "react";
+import { HiInformationCircle } from "react-icons/hi";
+import { useDispatch, useSelector } from "react-redux";
+import GoogleAuth from "../utils/GoogleAuth";
 import {
   Button,
   Checkbox,
@@ -7,15 +12,19 @@ import {
   Alert,
   Spinner,
 } from "flowbite-react";
-import { IoMdEyeOff, IoMdEye } from "react-icons/io";
-import { useState } from "react";
-import { HiInformationCircle } from "react-icons/hi";
+
+import {
+  logInStart,
+  logInSuccess,
+  logInFailure,
+} from "../redux/user/userSlice";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.user);
+
   const [showPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -29,10 +38,10 @@ export default function Signup() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!formData.username || !formData.email || !formData.password) {
-      return setErrorMessage("Please fill all the fields!");
+      dispatch;
     }
     try {
-      setLoading(true);
+      dispatch(logInStart());
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,18 +49,18 @@ export default function Signup() {
       });
       const data = await res.json();
       if (data.success === false) {
-        console.log("signup failed");
-        setErrorMessage(data.message);
+        dispatch(logInFailure(data));
+        console.error("signup failed");
       }
       if (res.ok) {
+        dispatch(logInSuccess(data));
         console.log("signup successful");
         navigate("/");
       }
     } catch (error) {
-      setErrorMessage(error.message);
-      console.log("signup failed");
+      dispatch(logInFailure(error));
+      console.error("signup failed");
     }
-    setLoading(false);
   }
 
   return (
@@ -108,7 +117,7 @@ export default function Signup() {
                 </div>
               )}
             </Button>
-            <Button outline>Continue with google</Button>
+            <GoogleAuth />
             <div className="pb-3 text-sm">
               <span>Already have an account? </span>
               <Link className="text-red-800" to="/login">
@@ -116,10 +125,10 @@ export default function Signup() {
               </Link>
             </div>
           </div>
-          {errorMessage && (
+          {error && (
             <Alert className="-mx-3" color="failure" icon={HiInformationCircle}>
               <span className="font-medium">Error! &nbsp;</span>
-              {errorMessage}
+              {error.message}
             </Alert>
           )}
         </form>

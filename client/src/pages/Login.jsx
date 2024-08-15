@@ -10,20 +10,20 @@ import {
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 import { useState } from "react";
 import { HiInformationCircle } from "react-icons/hi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   logInStart,
   logInSuccess,
   logInFailure,
 } from "../redux/user/userSlice";
+import GoogleAuth from "../utils/GoogleAuth";
 
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.user);
 
   const [showPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,10 +36,10 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      return setErrorMessage("Please fill all the fields!");
+      return dispatch(logInFailure("Please fill all the fields!"));
     }
     try {
-      setLoading(true);
+      dispatch(logInStart());
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,18 +47,18 @@ export default function Login() {
       });
       const data = await res.json();
       if (data.success === false) {
-        console.log("signup failed");
-        setErrorMessage(data.message);
+        console.error("login failed");
+        dispatch(logInFailure(data));
       }
       if (res.ok) {
-        console.log(data);
+        dispatch(logInSuccess(data));
+        console.log("login successful");
         navigate("/");
       }
     } catch (error) {
-      console.log("signup failed");
-      setErrorMessage(error.message);
+      dispatch(logInFailure(error));
+      console.error("login failed");
     }
-    setLoading(false);
   }
 
   return (
@@ -111,7 +111,7 @@ export default function Login() {
                 </div>
               )}
             </Button>
-            <Button outline>Continue with google</Button>
+            <GoogleAuth />
             <div className="pb-3 text-sm">
               <span>Don&apos;t have an account? </span>
               <Link className="text-red-800" to="/signup">
@@ -119,10 +119,10 @@ export default function Login() {
               </Link>
             </div>
           </div>
-          {errorMessage && (
+          {error && (
             <Alert className="-mx-3" color="failure" icon={HiInformationCircle}>
               <span className="font-medium">Error! &nbsp;</span>
-              {errorMessage}
+              {error.message}
             </Alert>
           )}
         </form>
