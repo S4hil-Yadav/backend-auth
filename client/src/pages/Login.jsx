@@ -64,7 +64,7 @@ export default function Login() {
   return (
     <div className="min-h-screen py-10">
       <div className="flex justify-center">
-        <form className="flex basis-full flex-col rounded-xl border-gray-500 px-[4%] pb-5 pt-10 md:basis-3/4 md:border lg:basis-1/2">
+        <form className="flex basis-full flex-col rounded-xl border-gray-500 px-[4%] pb-5 pt-10 dark:bg-gray-700 md:basis-3/4 md:border lg:basis-1/2">
           <h1 className="self-center pb-10 text-5xl font-bold">Log in</h1>
           <div className="flex flex-col gap-3">
             <div>
@@ -90,7 +90,10 @@ export default function Login() {
                   <Checkbox className="size-4" id="accept" defaultChecked />
                   <span>Remember Me</span>
                 </Label>
-                <a href="#" className="text-sm font-medium text-blue-800">
+                <a
+                  href="#"
+                  className="text-sm font-medium text-blue-800 dark:text-blue-400"
+                >
                   Forgot Password
                 </a>
               </div>
@@ -114,7 +117,7 @@ export default function Login() {
             <GoogleAuth />
             <div className="pb-3 text-sm">
               <span>Don&apos;t have an account? </span>
-              <Link className="text-red-800" to="/signup">
+              <Link className="text-red-800 dark:text-red-400" to="/signup">
                 Signup
               </Link>
             </div>

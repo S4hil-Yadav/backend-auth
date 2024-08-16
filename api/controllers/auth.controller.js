@@ -86,11 +86,11 @@ const google = async (req, res, next) => {
         })
         .json(rest);
     } else {
-      const randomPassword = Math.random().toString(36).slice(-8);
+      const randomPassword = "123456"; //Math.random().toString(36).slice(-8);
       const hashedPassword = bcryptjs.hashSync(randomPassword, 10);
 
-      const usernameInitial = name.toLowerCase().replace(/ /g, "_");
-      let username = usernameInitial;
+      const usernameInitial = name.toLowerCase().replace(/[^a-zA-Z\d]/g, "_");
+      let username = usernameInitial + Math.random().toString(9).slice(-4);
 
       while (await User.findOne({ username })) {
         username = usernameInitial + Math.random().toString(9).slice(-4);

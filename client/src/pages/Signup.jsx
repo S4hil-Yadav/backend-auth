@@ -120,7 +120,7 @@ export default function Signup() {
             <GoogleAuth />
             <div className="pb-3 text-sm">
               <span>Already have an account? </span>
-              <Link className="text-red-800" to="/login">
+              <Link className="text-red-800 dark:text-red-400" to="/login">
                 Login
               </Link>
             </div>
